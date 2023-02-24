@@ -21,6 +21,7 @@ To execute all the necessary steps for the deployment, you will need the followi
 1. If you have tested the application locally and then changed the Backend API variables for the different UIs, you need to change them back to work with the deployed services. Open the file [code/easyfranchise/source/ui/src/main.js](../../../code/easyfranchise/source/ui/src/main.js) and check the value for ```Vue.prototype.$backendApi```. It should be as follow:
    ```js
    Vue.prototype.$backendApi = "/backend/easyfranchise/rest/efservice/v1";
+   ````
 
 2. Then open the file [code/day2-operations/source/day2-ui/src/main.js](../../../code/day2-operations/source/day2-ui/src/main.js) and check the value for ```Vue.prototype.$backendApi```. It should be as follow:
    ```js

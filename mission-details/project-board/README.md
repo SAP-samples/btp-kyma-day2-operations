@@ -9,7 +9,6 @@
     - [Make Sure the Prerequisites Are Fulfilled](../../documentation/discover/prerequisites/README.md)
     - [What's New](../../documentation/discover/whats-new/README.md)
 - PREPARE
-    - [Introduction](../../documentation/prepare/README.md)
     - [Set Up your SAP BTP Environment and Deploy the Easy Franchise Application](../../documentation/prepare/btp-environment-and-app-deployment/README.md)
     - [Prepare the Customer Subaccount](../../documentation/prepare/prepare-customer-subaccount/)
 - METER

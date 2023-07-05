@@ -45,7 +45,7 @@ Using Spring Boot you can configure properties using application.properties file
 4. Use the following command if you go for the executive JAR file:
    ```
    $ ./mvnw clean package
-   $ java -jar target/operations-service-0.0.1-SNAPSHOT.jar -Dspring.config.location="application.properties"
+   $ java -jar target/day2-service-0.0.1-SNAPSHOT.jar -Dspring.config.location="application.properties"
    ```
    
 5. Check in the browser that the server is up and running by opening [http://localhost:8091/](http://localhost:8091/). You should get something like this:

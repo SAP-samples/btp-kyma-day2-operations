@@ -6,7 +6,9 @@ To demostrate how to expose custom metrics of your application through HTTP endp
 
 The **DB service** uses **Hibernate** as object-relational mapping framework to persist domain model entities to a relational database. The [SynchronizedConnectionMap java class](https://github.com/SAP-samples/btp-kyma-multitenant-extension/blob/main/code/easyfranchise/source/backend/db-service/src/main/java/dev/kyma/samples/easyfranchise/dbservice/SynchronizedConnectionMap.java) make use of the  **C3P0ConnectionProvider class**, provided by Hibernate. This connection provider uses a [C3P0 connection pool](https://www.mchange.com/projects/c3p0/).
 
-To illustrate how custom metrics are exposed in [Prometheus format](https://prometheus.io/docs/concepts/data_model/#metric-names-and-labels)<sup>[1](#OpenMetrics)</sup> through your own application, following example is provided:
+To illustrate how custom metrics are exposed in [Prometheus format](https://prometheus.io/docs/concepts/data_model/#metric-names-and-labels) through your own application, following example is provided.
+> Note: you can also use [Open Metrics](https://openmetrics.io/), which is a more vendor neutral format and successor of the Prometheus format.
+
 [C3P0 DB connection pool metrics](../../../code/day2-operations/source/day2-service/src/main/java/dev/kyma/samples/easyfranchise/day2/rest/jmx/C3P0ConnectionPoolMetricsScheduler.java) implemented using [Prometheus Java client](https://github.com/prometheus/client_java). In our DB-service [c3p0 pool](https://www.mchange.com/projects/c3p0/) is used to access the database of the Easy Franchise application. We collected the following metrics to provide a real-time monitoring of the database connecion usage for each of the subscribed tenants:
 
   - db_number_connections_all_users
@@ -244,6 +246,3 @@ spec:
     }
 ```
 
-## Reference:
-
-<a name="OpenMetrics">1</a>: [OpenMetrics](https://openmetrics.io/) format is a more vendor neutral succssor of the Prometheus format

@@ -12,7 +12,7 @@ To execute all the necessary steps for the deployment, you will need the followi
 * [Kubernetes CLI](https://kubernetes.io/docs/tasks/tools/#kubectl)
 * [Kubernetes OpenID Connect (OIDC) authentication](https://github.com/int128/kubelogin)
 * [jq](https://stedolan.github.io/jq/) 
-* [uuidgen](https://packages.ubuntu.com/bionic/uuid-runtime)
+* [uuidgen](https://launchpad.net/ubuntu/bionic/+package/uuid-runtime)
 
 **NOTE** If you use Windows, we recommend using a Linux subsystem for the mission as our scripts are only available as bash scripts. Furthermore, most of the examples around Kubernetes, for example, are written for Linux/MacOS environments. See [Install WSL](https://docs.microsoft.com/en-us/windows/wsl/install) in the Microsoft documentation for more details. If you have chosen to use Linux, you need to choose the Linux installation option for the mentioned tools.
 

@@ -33,6 +33,7 @@
             <fd-select v-model="actualYear" @update="updateData()">
               <option value="2021">2021</option>
               <option value="2022">2022</option>
+              <option value="2023">2023</option>
             </fd-select>
           </fd-form-item>
         </fd-field-set>

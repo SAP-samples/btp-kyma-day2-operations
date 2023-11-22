@@ -401,9 +401,9 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
       kubectl create namespace "logging" || true
       kubectl create namespace "otel-system" || true
 
-      kubectl label namespace "$NAMESPACE" istio-injection=enabled --overwrite || true  
+      kubectl label namespace "$NAMESPACE" istio-injection=enabled --overwrite || true
       kubectl label namespace "logging" istio-injection=enabled --overwrite || true
-      kubectl label namespace "otel-system" istio-injection=enabled --overwrite || true
+      kubectl label namespace "otel-system" istio-injection=enabled --overwrite || true      
     else 
       log "Skipped for Dry Run"
     fi

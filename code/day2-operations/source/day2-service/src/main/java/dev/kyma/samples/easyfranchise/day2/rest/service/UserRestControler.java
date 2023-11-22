@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,6 +32,7 @@ public class UserRestControler {
 	@Autowired
 	private UserLoginInfoService userLoginInfoService;
 
+	@CrossOrigin //we have to allow CrossOrigin for local testing. Don't allow CrossOrigin for production running applications!! 
 	@GetMapping("/user/metric")
 	public List<UserMetric> getUserMetric(@RequestParam @NotNull int year,
 			@RequestParam @NotNull @Min(1) @Max(12) Integer month) {

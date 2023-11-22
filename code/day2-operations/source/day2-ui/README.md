@@ -1,4 +1,4 @@
-# Metering Dashboard UI
+# Day2 UI
 
 ## How to Run the Service 
 

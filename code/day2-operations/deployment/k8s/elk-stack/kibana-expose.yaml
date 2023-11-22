@@ -24,7 +24,7 @@ metadata:
   name: kibana-expose
 spec:
   gateway: kyma-gateway.kyma-system.svc.cluster.local
-  host: kibana
+  host: kibana 
   service:
     name: ef-kibana-kb-http
     port: 5601    

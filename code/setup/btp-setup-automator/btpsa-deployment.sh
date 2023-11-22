@@ -143,7 +143,63 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     log "####################################################################################################"
     echo ""
 
-    log "Step 2.1 - Create Namepaces"
+    log "Step 2.1 - Enable BTP Operator"
+    # Download and Install Kyma CLI
+    curl -Lo kyma.tar.gz "https://github.com/kyma-project/cli/releases/download/$(curl -s https://api.github.com/repos/kyma-project/cli/releases/latest | grep tag_name | cut -d '"' -f 4)/kyma_Linux_x86_64.tar.gz" \
+    && mkdir kyma-release && tar -C kyma-release -zxvf kyma.tar.gz && chmod +x kyma-release/kyma && sudo mv kyma-release/kyma /usr/local/bin \
+    && rm -rf kyma-release kyma.tar.gz
+
+    # Wait for Kyma CLI to be ready
+    KYMA_CLI_READY=0
+    MAX_RETRIES=5
+    RETRY_INTERVAL=5
+
+    for ((i=1; i<=MAX_RETRIES; i++)); do
+        if kyma version; then
+            KYMA_CLI_READY=1
+            break
+        else
+            echo "Waiting for Kyma CLI to be ready... retry $i/$MAX_RETRIES"
+            sleep $RETRY_INTERVAL
+        fi
+    done
+
+    if [ $KYMA_CLI_READY -eq 0 ]; then
+        echo "Kyma CLI is not ready. Exiting..."
+        exit 1
+    else
+        echo "Kyma CLI is ready."
+    fi
+
+    # Enable BTP Operator
+    kyma alpha enable module btp-operator  --channel regular --kyma-name default --wait
+
+
+    # Wait for BTP Operator to be ready
+    BTP_OPERATOR_READY=0
+    MAX_RETRIES=30
+    RETRY_INTERVAL=10
+
+    for ((i=1; i<=MAX_RETRIES; i++)); do
+        if kubectl get pods -n kyma-system | grep -q 'btp-operator.*Running'; then
+            BTP_OPERATOR_READY=1
+            break
+        else
+            echo "Waiting for BTP Operator to be ready... retry $i/$MAX_RETRIES"
+            sleep $RETRY_INTERVAL
+        fi
+    done
+
+    if [ $BTP_OPERATOR_READY -eq 0 ]; then
+        echo "BTP Operator is not ready. Exiting..."
+        exit 1
+    else
+        echo "BTP Operator is ready."
+    fi
+
+    echo
+
+    log "Step 2.2 - Create Namepaces"
     kubectl create namespace integration || true
     kubectl create namespace backend || true
     kubectl create namespace mock || true
@@ -155,57 +211,57 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     kubectl label namespace frontend istio-injection=enabled --overwrite || true
     echo
 
-    log "Step 2.2 - DB Secret: "
+    log "Step 2.3 - DB Secret: "
     cat /home/user/tutorial/code/easyfranchise/deployment/k8s/db-secret.yaml | sed "s~<db-sqlendpoint>~$DB_SQLENDPOINT~g" | sed "s~<db-admin>~$DB_ADMIN~g" | sed "s~<db-admin-password>~$DB_ADMIN_PASSWORD~g" | kubectl apply -f - || true
     echo
 
-    log "Step 2.3 - Backend Configmap"
+    log "Step 2.4 - Backend Configmap"
     kubectl apply -n backend -f /home/user/tutorial/code/easyfranchise/deployment/k8s/backend-configmap.yaml
     kubectl apply -n integration -f /home/user/tutorial/code/easyfranchise/deployment/k8s/backend-configmap.yaml      
     echo
 
-    log "Step 2.4 - BTP Service Deployment"
+    log "Step 2.5 - BTP Service Deployment"
     cat "/home/user/tutorial/code/easyfranchise/deployment/k8s/btp-services.yaml" | sed "s~<provider-subdomain>~$SUBDOMAIN~g" | sed "s~<cluster-domain>~$CLUSTER_DOMAIN~g" | kubectl apply -f -
     echo
 
     PROJECT=approuter
-    log "Step 2.5 - Deploy $PROJECT"
+    log "Step 2.6 - Deploy $PROJECT"
     FULL_NAME=$BTPSA_KYMA_IMAGE_NAME_APPROUTER:$BTPSA_KYMA_IMAGE_TAG
     cat "/home/user/tutorial/code/easyfranchise/deployment/k8s/$PROJECT.yaml" | sed "s~<image-name>~$FULL_NAME~g" | sed "s~<provider-subdomain>~$SUBDOMAIN~g" | sed "s~<cluster-domain>~$CLUSTER_DOMAIN~g" | kubectl apply -f -
 
     PROJECT=db-service
     FULL_NAME=$BTPSA_KYMA_IMAGE_NAME_DB_SERVICE:$BTPSA_KYMA_IMAGE_TAG
-    log "Step 2.6 - Deploy $PROJECT"
+    log "Step 2.7 - Deploy $PROJECT"
     cat "/home/user/tutorial/code/easyfranchise/deployment/k8s/$PROJECT.yaml" | sed "s~<image-name>~$FULL_NAME~g" | kubectl apply -f -
 
     PROJECT=bp-service
     FULL_NAME=$BTPSA_KYMA_IMAGE_NAME_BP_SERVICE:$BTPSA_KYMA_IMAGE_TAG
-    log "Step 2.7 - Deploy $PROJECT"
+    log "Step 2.8 - Deploy $PROJECT"
     cat "/home/user/tutorial/code/easyfranchise/deployment/k8s/$PROJECT.yaml" | sed "s~<image-name>~$FULL_NAME~g" | kubectl apply -f -
 
     PROJECT=ef-service
     FULL_NAME=$BTPSA_KYMA_IMAGE_NAME_EF_SERVICE:$BTPSA_KYMA_IMAGE_TAG
-    log "Step 2.8 - Deploy $PROJECT"
+    log "Step 2.9 - Deploy $PROJECT"
     cat "/home/user/tutorial/code/easyfranchise/deployment/k8s/$PROJECT.yaml" | sed "s~<image-name>~$FULL_NAME~g" | kubectl apply -f -
 
     PROJECT=broker
     FULL_NAME=$BTPSA_KYMA_IMAGE_NAME_BROKER:$BTPSA_KYMA_IMAGE_TAG
-    log "Step 2.9 - Deploy $PROJECT"
+    log "Step 2.10 - Deploy $PROJECT"
     cat "/home/user/tutorial/code/easyfranchise/deployment/k8s/$PROJECT.yaml" | sed "s~<image-name>~$FULL_NAME~g" | kubectl apply -f -
 
     PROJECT=email-service
     FULL_NAME=$BTPSA_KYMA_IMAGE_NAME_EMAIL_SERVICE:$BTPSA_KYMA_IMAGE_TAG
-    log "Step 2.10 - Deploy $PROJECT"
+    log "Step 2.11 - Deploy $PROJECT"
     cat "/home/user/tutorial/code/easyfranchise/deployment/k8s/$PROJECT.yaml" | sed "s~<image-name>~$FULL_NAME~g" | kubectl apply -f -
 
     PROJECT=ui
     FULL_NAME=$BTPSA_KYMA_IMAGE_NAME_UI:$BTPSA_KYMA_IMAGE_TAG
-    log "Step 2.11 - Deploy $PROJECT"
+    log "Step 2.12 - Deploy $PROJECT"
     cat "/home/user/tutorial/code/easyfranchise/deployment/k8s/$PROJECT.yaml" | sed "s~<image-name>~$FULL_NAME~g" | kubectl apply -f -
 
     PROJECT=business-partner-mock
     FULL_NAME=$BTPSA_KYMA_IMAGE_NAME_BUSINESS_PARTNER_MOCK:$BTPSA_KYMA_IMAGE_TAG
-    log "Step 2.12 - Deploy $PROJECT"
+    log "Step 2.13 - Deploy $PROJECT"
     cat "/home/user/tutorial/code/easyfranchise/deployment/k8s/$PROJECT.yaml" | sed "s~<image-name>~$FULL_NAME~g" | kubectl apply -f -
 
 
@@ -214,15 +270,15 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
       kubectl label namespace day2-operations istio-injection=enabled --overwrite || true  
       
       PROJECT=day2-approuter
-      log "Step 2.13 - Deploy $PROJECT"
+      log "Step 2.14 - Deploy $PROJECT"
       helm upgrade "$PROJECT" "/home/user/tutorial/code/day2-operations/deployment/helmCharts/day2-approuter-chart" --install --namespace "day2-operations" --set clusterdomain="$CLUSTER_DOMAIN" --set image.repository="$BTPSA_KYMA_IMAGE_NAME_DAY2_APPROUTER" --set image.tag="$BTPSA_KYMA_IMAGE_TAG" --wait --timeout 90s --atomic
 
       PROJECT=day2-ui
-      log "Step 2.14 - Deploy $PROJECT"
+      log "Step 2.15 - Deploy $PROJECT"
       helm upgrade "$PROJECT" "/home/user/tutorial/code/day2-operations/deployment/helmCharts/day2-ui-chart" --install --namespace "day2-operations" --set image.repository="$BTPSA_KYMA_IMAGE_NAME_DAY2_UI" --set image.tag="$BTPSA_KYMA_IMAGE_TAG" --wait --timeout 90s --atomic
 
       PROJECT=day2-service
-      log "Step 2.15 - Deploy $PROJECT"
+      log "Step 2.16 - Deploy $PROJECT"
       helm upgrade "$PROJECT" "/home/user/tutorial/code/day2-operations/deployment/helmCharts/day2-service-chart" --install --namespace "day2-operations" --set db.sqlendpoint="$DB_SQLENDPOINT" --set db.admin="$DB_ADMIN" --set db.password="$DB_ADMIN_PASSWORD" --set image.repository="$BTPSA_KYMA_IMAGE_NAME_DAY2_SERVICE" --set image.tag="$BTPSA_KYMA_IMAGE_TAG" --wait --timeout 90s --atomic  
     fi
 fi

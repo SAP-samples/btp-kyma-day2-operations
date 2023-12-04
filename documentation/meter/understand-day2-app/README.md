@@ -1,6 +1,6 @@
 # Understand the Implementation of the Day2 Application
 
-Lets first recap the architecture of the EasyFranchise application without metering:
+Let us first recap the architecture of the EasyFranchise application without metering:
 
 ![](https://raw.githubusercontent.com/SAP-samples/btp-kyma-multitenant-extension/main/documentation/images/easyfranchise-diagrams/Slide4.jpeg)
 

@@ -188,14 +188,16 @@ Run the following commands to start the services. Start each in a separate comma
 
 ### Test the APIs
 
-1. Check that you can get all mentors:
+1. Onboard the first tenant by following these [instructions](https://github.com/SAP-samples/btp-kyma-multitenant-extension/blob/main/documentation/prepare/test-app-locally/README.md#onboard-the-first-tenant).
+
+2. Check that you can get all mentors. You should get an empty array if you haven't open the app UI till now.
    ``` 
    curl  --request GET 'http://localhost:8080/easyfranchise/rest/efservice/v1/mentor' 
    ```
 
    > Note: If the request fails, check the logs of ```ef-service``` and ```db-service```.
 
-2. Check that you can read franchisees.
+3. Check that you can read franchisees.
    ```
    curl --request GET 'http://localhost:8080/easyfranchise/rest/efservice/v1/franchisee' 
    ```
@@ -225,11 +227,10 @@ Run the following commands to start the services. Start each in a separate comma
    ```shell
    $ npm run serve
    ```
-   As result the application should show where it's running. 
-   By default this is at: 
+   As result you get the url of the application. The port may be different if you started the mock server for example.
 
    ```
-   http://localhost:8081/
+   http://localhost:8082
    ```
 5. Open this URL in a browser.
 6. Opening the Easy Franchise UI will create a login metering info, which you should be able to see in the Day2 UI in the next step. 

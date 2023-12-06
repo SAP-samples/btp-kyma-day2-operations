@@ -1,6 +1,6 @@
 # Learn More About Other Business Logic Metrics
 
-When looking at the **Easy Franchise Application**, you might want to meter other metrics. For example, you might want to count when an email is sent or when a new Mentor is assigned. 
+When looking at the **Easy Franchise Application**, you might want to meter other metrics. For example, you might want to count when an email is sent or when a new mentor is assigned. 
 
 In your own scenario you might face completely different requirements. 
 

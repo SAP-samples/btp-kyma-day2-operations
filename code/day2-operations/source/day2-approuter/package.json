@@ -1,7 +1,7 @@
 {
    "name": "day2-approuter",
    "dependencies": {
-      "@sap/approuter": "10.15.0"
+      "@sap/approuter": "14.4.2"
    },
    "scripts": {
       "start": "node node_modules/@sap/approuter/approuter.js"

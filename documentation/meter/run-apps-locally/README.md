@@ -85,13 +85,13 @@ Using Spring Boot you can configure properties using application.properties file
 ## Start the Database Service, the Easy Franchise Service, and the Business Partner Service
 
 ### Prerequisites
-- You have prepared the SAP HANA Cloud properties for a JDBC connection. 
-- You have a SAP S/4HANA Cloud system or a Business Partner mock server up and running 
+- You have prepared the SAP HANA Cloud [properties](https://github.com/SAP-samples/btp-kyma-multitenant-extension/blob/main/documentation/prepare/configure-hana/README.md#how-to-find-jdbc-connection-properties) (name, endpoints, ...) for a JDBC connection. 
+- You have a [SAP S/4HANA Cloud system or a Business Partner mock server](https://github.com/SAP-samples/btp-kyma-multitenant-extension/blob/main/documentation/prepare/configure-s4/README.md) up and running.
 
 ### Configure the hiddenconfig.properties File
 
 To run locally the services listed above, you have to configure some properties in the `hiddenconfig.properties` file:
-1. Open the prepared sources from the previous steps or download the one from the GitHub [Repository](../../../code/easyfranchise/source/backend). In the **endresult** branch, you will find the source in the [code/easyfranchise/source/backend](../../../code/easyfranchise/source/backend) folder.
+1. Open the prepared sources from the previous steps. As alternative you can download it from the **endresult** branch.
 
 2. Copy the file [code/easyfranchise/source/backend/shared-code/src/main/resources/hiddenconfig-template.properties](../../../code/easyfranchise/source/backend/shared-code/src/main/resources/hiddenconfig-template.properties) to `hiddenconfig.properties` in the same folder.
 

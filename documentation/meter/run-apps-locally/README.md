@@ -34,18 +34,18 @@ Using Spring Boot you can configure properties using application.properties file
 2. To run the application you have the choice between using spring-boot-plugin or an executive JAR file.
 3. Use the following command if you go for the spring-boot plugin:
    ```
-   $ ./mvnw spring-boot:run -Dspring.config.location="application.properties"
+   ./mvnw spring-boot:run -Dspring.config.location="application.properties"
    ```
 
    In case of debugging use: 
    ```
-   $ ./mvnw spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8888" -Dspring.config.location="application.properties"
+   ./mvnw spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8888" -Dspring.config.location="application.properties"
    ```
    
 4. Use the following command if you go for the executive JAR file:
    ```
-   $ ./mvnw clean package
-   $ java -jar target/day2-service-0.0.1-SNAPSHOT.jar -Dspring.config.location="application.properties"
+   ./mvnw clean package
+   java -jar target/day2-service-0.0.1-SNAPSHOT.jar -Dspring.config.location="application.properties"
    ```
    
 5. Check in the browser that the server is up and running by opening [http://localhost:8091/](http://localhost:8091/). You should get something like this:
@@ -213,19 +213,19 @@ Run the following commands to start the services. Start each in a separate comma
 2. Open a new terminal and change directory to **ui**.
 
    ```shell
-   $ cd ui
+   cd ui
    ```
 
 3. Install Node.js modules in your repository by running:
 
    ```shell
-   $ npm install
+   npm install
    ```
 
 4. Run the server:
 
    ```shell
-   $ npm run serve
+   npm run serve
    ```
    As result you get the url of the application. The port may be different if you started the mock server for example.
 
@@ -248,19 +248,17 @@ Run the following commands to start the services. Start each in a separate comma
 
 3. Install the Node.js modules.
    ```shell
-   $ npm install
+   npm install
    ```
    
 4. Start the service.
    ```shell
-   $ npm run serve
+   npm run serve
    ```
    
-   As result the application should show where it's running. 
-   By default this is at: 
-
+   As result you get the url of the application. The port may be different if you started the mock server for example.
    ```
-   http://localhost:8081
+   http://localhost:8083
    ```
 5. Open this URL in a browser.
 
@@ -273,9 +271,9 @@ Run the following commands to start the services. Start each in a separate comma
    - (Optional) Running a REST call against the Day2 service via CURL command and fake a user login of, for example, "Jon Smith" for "second-local-tenant-id": 
    
      ```shell
-     curl --request PUT 'http://localhost:3000/user/login' \
+     curl --request PUT 'http://localhost:8091/user/login' \
      --header 'Content-Type: application/json' \
-     --data-raw '{"tenantid": "second-local-tenant-id", "user": "Jon Smith"}
+     --data-raw '{"tenantid": "second-local-tenant-id", "user": "Jon Smith"}'
      ```
      
 > Note: check our [troubleshooting page](./../../troubleshooting/no-active-user-metering-values/README.md) if you can't see any active user metering values.

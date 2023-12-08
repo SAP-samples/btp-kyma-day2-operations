@@ -1,5 +1,5 @@
 # build stage
-FROM node:14-alpine as build-stage
+FROM --platform=linux/amd64 node:18-alpine as build-stage
 WORKDIR /app
 COPY code/day2-operations/source/day2-ui/package*.json ./
 RUN npm install

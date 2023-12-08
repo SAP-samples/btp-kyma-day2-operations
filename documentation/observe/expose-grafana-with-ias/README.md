@@ -6,26 +6,30 @@ Kyma comes with Grafana, which provides a dashboard and a graph editor to visual
 
 For exposing the Grafana dashboard outside the cluster, we need to have an authentication provider, which is achieved through SAP Identity Authentication service.
 
-To obtain a tenant of Identity Authentication please refer to [official document](https://help.sap.com/docs/IDENTITY_AUTHENTICATION/6d6d63354d1242d185ab4830fc04feb1/93160ebd2dcb40e98aadcbb9a970f2b9.html#getting-a-tenant). For SAP Employees there is a different process described [here](https://github.tools.sap/saas-extension-on-kyma/easyfranchise-internal-appendix/blob/main/btp-kyma-day2-operations/README.md)
+To obtain a tenant of Identity Authentication please refer to [official document](https://help.sap.com/docs/IDENTITY_AUTHENTICATION/6d6d63354d1242d185ab4830fc04feb1/93160ebd2dcb40e98aadcbb9a970f2b9.html#getting-a-tenant). For SAP Employees there is a different process described [here](https://github.tools.sap/saas-extension-on-kyma/easyfranchise-internal-appendix/blob/main/btp-kyma-day2-operations/README.md).
 
-1. In Identity Authentication, create a new OpenID Connect application by clicking on **Create** button. Fill in **Display Name**, e.g. `<YourKymaCluster>-expose-grafana` and click **Save**. Select the application just being created, and click on Protocol. Set protocol to **OpenID Connect** and click **Save** button.
+> Note: for more details on the Identity Authentication service, we recommand you to have a look a the mission [Easy Franchise: Enrich a Kyma-Based Multitenant Application with Additional Identity Features](https://github.com/SAP-samples/btp-kyma-identity-management/tree/main).
 
-   ![](images/ias_switch_to_openid.png)
+1. Open the Identity Authentication service and go to **Applications**.
+   ![](images/2023_ias-create-app.png)
 
-2. Click on **OpenID Connect Configuration**,  then choose a proper name and set the callback URL to the path `https://grafana.<your-Kyma-cluster-domain>/oauth2/callback`. Then click **Save** button. 
+2. Create a new OpenID Connect application by clicking on **Create**. 
+   ![](images/2023_ias-create-app-01.png)
 
-   ![](images/ias_callback_url.png)
+3. Add a **Display Name**, e.g. `<YourKymaCluster>-expose-grafana`. Set protocol to **OpenID Connect**. Set the **Home URL** to `https://grafana.<YOUR-KYMA-CLUSTER>.kyma.ondemand.com/oauth2/callback`. Keep the type to **Unknown**. Then click **Save** button. 
+   ![](images/2023_ias-create-app-02b.png)
 
-   Note that the domain of Kyma cluster follows the convention  `https://grafana.<cluster-domain>`,  e.g. https://grafana.c-83380a9.stage.kyma.ondemand.com/
+> Note: you can find your Kyma cluster by opening your Kyma dashboard.
 
-3. Click on **Client Authentication**. Then click **Add** button to create a secret in IAS for API Authentication. 
+4. Scroll down and click on **Client Authentication**. 
+   ![](images/2023_navigate_create_secret.png) 
 
-   ![](images/navigate_create_secret.png) 
+5. Then click **Add** button to create a secret in IAS for API Authentication. In the opened dialog provide meaningful description and keep the preselected options. Click on **Save** button. Note down the **Client ID** and **Client Secret** in the popup window.
+   ![](images/2023_create_secret.png)
 
-4. In the opened dialog provide meaningful description check what is preselected in for **Expire in**. All **scopes** should be selected. Click on **Save** button. Note down the **Client ID** and **Client Secret** in the popup window.
-   
-   ![](images/create_secret.png)
-5. Create a Secret for OAuth2 Proxy in Kyma cluster
+6. Open a terminal and connect to your Kyma cluster.
+
+7. Create a **Secret** for OAuth2 Proxy in Kyma cluster by running the following command.
 
    The **client_id_from_IAS** and **client_secret_from_IAS** are created in previous step. The **IAS URL** is the URL of your Identity Authentication tenant URL.
    Before running the below command, replace below placeholders with your own values.

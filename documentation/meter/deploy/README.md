@@ -116,12 +116,12 @@ When we speak about **docker-repository**, we mean the combination of account an
    4. If the deployment was successful, you should see the following output:
 
       ``` bash
-      Release "day2-service" has been upgraded. Happy Helming!
+      Release "day2-service" does not exist. Installing it now.
       NAME: day2-service
-      LAST DEPLOYED: Mon May  9 15:50:59 2022
-      NAMESPACE: default
+      LAST DEPLOYED: Fri Dec 8 10:50:59 2023
+      NAMESPACE: day2-operations
       STATUS: deployed
-      REVISION: 3
+      REVISION: 1
       TEST SUITE: None
       ```
 
@@ -147,12 +147,12 @@ When we speak about **docker-repository**, we mean the combination of account an
    4. If the deployment was successful, you should see the following output:
 
       ``` bash
-      Release "day2-approuter" has been upgraded. Happy Helming!
+      Release "day2-approuter" does not exist. Installing it now.
       NAME: day2-approuter
-      LAST DEPLOYED: Mon May  9 15:49:58 2022
-      NAMESPACE: default
+      LAST DEPLOYED: Fri Dec 8 10:55:59 2023
+      NAMESPACE: day2-operations
       STATUS: deployed
-      REVISION: 3
+      REVISION: 1
       TEST SUITE: None
       ```
 
@@ -178,11 +178,11 @@ When we speak about **docker-repository**, we mean the combination of account an
    4. If the deployment was successful, you should see the following output:
 
       ``` bash
-      Release "day2-ui" has been upgraded. Happy Helming!
+      Release "day2-ui" does not exist. Installing it now.
       NAME: day2-ui
-      LAST DEPLOYED: Mon May  9 15:51:56 2022
+      LAST DEPLOYED: Fri Dec 8 10:58:59 2023
       NAMESPACE: day2-operations
       STATUS: deployed
-      REVISION: 3
+      REVISION: 1
       TEST SUITE: None
       ```

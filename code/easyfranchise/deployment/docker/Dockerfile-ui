@@ -1,9 +1,13 @@
 # build stage
-FROM --platform=linux/amd64 node:14-alpine as build-stage
+FROM --platform=linux/amd64 node:18-alpine as build-stage
 WORKDIR /app
 COPY code/easyfranchise/source/ui/package*.json ./
 RUN npm install
 COPY code/easyfranchise/source/ui/. .
+
+# Set the environment variable for Node.js
+ENV NODE_OPTIONS=--openssl-legacy-provider
+
 RUN npm run build
 
 # production stage

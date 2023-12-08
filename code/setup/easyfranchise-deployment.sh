@@ -402,8 +402,20 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
       echo '-----------------------------------'
       cat ./../easyfranchise/deployment/k8s/db-secret.yaml | sed "s~<db-sqlendpoint>~$DB_SQLENDPOINT~g" | sed "s~<db-admin>~$DB_ADMIN~g" | sed "s~<db-admin-password>~$DB_ADMIN_PASSWORD~g" | echo "$(cat -)"
       echo '-----------------------------------'
-    else 
-      cat ./../easyfranchise/deployment/k8s/db-secret.yaml | sed "s~<db-sqlendpoint>~$DB_SQLENDPOINT~g" | sed "s~<db-admin>~$DB_ADMIN~g" | sed "s~<db-admin-password>~$DB_ADMIN_PASSWORD~g" | kubectl apply -f - || true
+    else
+      log 'Creating DB Secret...'
+            
+      cat ./../easyfranchise/deployment/k8s/db-secret.yaml | \
+      sed "s~<db-sqlendpoint>~$DB_SQLENDPOINT~g" | \
+      sed "s~<db-admin>~$DB_ADMIN~g" | \
+      sed "s~<db-admin-password>~$DB_ADMIN_PASSWORD~g" | \
+      kubectl apply -f - 
+
+      if [ $? -eq 0 ]; then
+          log "kubectl apply successful"
+      else
+          log "kubectl apply failed"
+      fi || true
     fi
     echo
     log "Registry Secrets"
@@ -422,8 +434,19 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     if [ "$DRY_RUN" = true ]; then
       log "Skipped for Dry Run"
     else 
+      log "Creating backend and integration ConfigMaps..."
       kubectl apply -n backend -f ./../easyfranchise/deployment/k8s/backend-configmap.yaml
-      kubectl apply -n integration -f ./../easyfranchise/deployment/k8s/backend-configmap.yaml      
+      if [ $? -eq 0 ]; then
+          log "Successfully applied backend-configmap.yaml in the backend namespace"
+      else
+          log "Failed to apply backend-configmap.yaml in the backend namespace"
+      fi
+      kubectl apply -n integration -f ./../easyfranchise/deployment/k8s/backend-configmap.yaml
+      if [ $? -eq 0 ]; then
+          log "Successfully applied backend-configmap.yaml in the integration namespace"
+      else
+          log "Failed to apply backend-configmap.yaml in the integration namespace"
+      fi
     fi
     echo
 

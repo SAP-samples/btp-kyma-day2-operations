@@ -34,18 +34,18 @@ Using Spring Boot you can configure properties using application.properties file
 2. To run the application you have the choice between using spring-boot-plugin or an executive JAR file.
 3. Use the following command if you go for the spring-boot plugin:
    ```
-   $ ./mvnw spring-boot:run -Dspring.config.location="application.properties"
+   ./mvnw spring-boot:run -Dspring.config.location="application.properties"
    ```
 
    In case of debugging use: 
    ```
-   $ ./mvnw spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8888" -Dspring.config.location="application.properties"
+   ./mvnw spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8888" -Dspring.config.location="application.properties"
    ```
    
 4. Use the following command if you go for the executive JAR file:
    ```
-   $ ./mvnw clean package
-   $ java -jar target/day2-service-0.0.1-SNAPSHOT.jar -Dspring.config.location="application.properties"
+   ./mvnw clean package
+   java -jar target/day2-service-0.0.1-SNAPSHOT.jar -Dspring.config.location="application.properties"
    ```
    
 5. Check in the browser that the server is up and running by opening [http://localhost:8091/](http://localhost:8091/). You should get something like this:
@@ -85,13 +85,13 @@ Using Spring Boot you can configure properties using application.properties file
 ## Start the Database Service, the Easy Franchise Service, and the Business Partner Service
 
 ### Prerequisites
-- You have prepared the SAP HANA Cloud properties for a JDBC connection. 
-- You have a SAP S/4HANA Cloud system or a Business Partner mock server up and running 
+- You have prepared the SAP HANA Cloud [properties](https://github.com/SAP-samples/btp-kyma-multitenant-extension/blob/main/documentation/prepare/configure-hana/README.md#how-to-find-jdbc-connection-properties) (name, endpoints, ...) for a JDBC connection. 
+- You have a [SAP S/4HANA Cloud system or a Business Partner mock server](https://github.com/SAP-samples/btp-kyma-multitenant-extension/blob/main/documentation/prepare/configure-s4/README.md) up and running.
 
 ### Configure the hiddenconfig.properties File
 
 To run locally the services listed above, you have to configure some properties in the `hiddenconfig.properties` file:
-1. Open the prepared sources from the previous steps or download the one from the GitHub [Repository](../../../code/easyfranchise/source/backend). In the **endresult** branch, you will find the source in the [code/easyfranchise/source/backend](../../../code/easyfranchise/source/backend) folder.
+1. Open the prepared sources from the previous steps. As alternative you can download it from the **endresult** branch.
 
 2. Copy the file [code/easyfranchise/source/backend/shared-code/src/main/resources/hiddenconfig-template.properties](../../../code/easyfranchise/source/backend/shared-code/src/main/resources/hiddenconfig-template.properties) to `hiddenconfig.properties` in the same folder.
 
@@ -188,14 +188,16 @@ Run the following commands to start the services. Start each in a separate comma
 
 ### Test the APIs
 
-1. Check that you can get all mentors:
+1. Onboard the first tenant by following these [instructions](https://github.com/SAP-samples/btp-kyma-multitenant-extension/blob/main/documentation/prepare/test-app-locally/README.md#onboard-the-first-tenant).
+
+2. Check that you can get all mentors. You should get an empty array if you haven't open the app UI till now.
    ``` 
    curl  --request GET 'http://localhost:8080/easyfranchise/rest/efservice/v1/mentor' 
    ```
 
    > Note: If the request fails, check the logs of ```ef-service``` and ```db-service```.
 
-2. Check that you can read franchisees.
+3. Check that you can read franchisees.
    ```
    curl --request GET 'http://localhost:8080/easyfranchise/rest/efservice/v1/franchisee' 
    ```
@@ -211,25 +213,24 @@ Run the following commands to start the services. Start each in a separate comma
 2. Open a new terminal and change directory to **ui**.
 
    ```shell
-   $ cd ui
+   cd ui
    ```
 
 3. Install Node.js modules in your repository by running:
 
    ```shell
-   $ npm install
+   npm install
    ```
 
 4. Run the server:
 
    ```shell
-   $ npm run serve
+   npm run serve
    ```
-   As result the application should show where it's running. 
-   By default this is at: 
+   As result you get the url of the application. The port may be different if you started the mock server for example.
 
    ```
-   http://localhost:8081/
+   http://localhost:8082
    ```
 5. Open this URL in a browser.
 6. Opening the Easy Franchise UI will create a login metering info, which you should be able to see in the Day2 UI in the next step. 
@@ -247,19 +248,17 @@ Run the following commands to start the services. Start each in a separate comma
 
 3. Install the Node.js modules.
    ```shell
-   $ npm install
+   npm install
    ```
    
 4. Start the service.
    ```shell
-   $ npm run serve
+   npm run serve
    ```
    
-   As result the application should show where it's running. 
-   By default this is at: 
-
+   As result you get the url of the application. The port may be different if you started the mock server for example.
    ```
-   http://localhost:8081
+   http://localhost:8083
    ```
 5. Open this URL in a browser.
 
@@ -272,9 +271,9 @@ Run the following commands to start the services. Start each in a separate comma
    - (Optional) Running a REST call against the Day2 service via CURL command and fake a user login of, for example, "Jon Smith" for "second-local-tenant-id": 
    
      ```shell
-     curl --request PUT 'http://localhost:3000/user/login' \
+     curl --request PUT 'http://localhost:8091/user/login' \
      --header 'Content-Type: application/json' \
-     --data-raw '{"tenantid": "second-local-tenant-id", "user": "Jon Smith"}
+     --data-raw '{"tenantid": "second-local-tenant-id", "user": "Jon Smith"}'
      ```
      
 > Note: check our [troubleshooting page](./../../troubleshooting/no-active-user-metering-values/README.md) if you can't see any active user metering values.

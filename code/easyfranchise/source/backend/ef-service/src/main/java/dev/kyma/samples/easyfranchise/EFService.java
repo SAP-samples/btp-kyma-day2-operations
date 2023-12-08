@@ -1,7 +1,5 @@
 package dev.kyma.samples.easyfranchise;
 
-import java.io.StringReader;
-import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -20,12 +18,8 @@ import dev.kyma.samples.easyfranchise.dbentities.Coordinator;
 import dev.kyma.samples.easyfranchise.dbentities.Mentor;
 import dev.kyma.samples.easyfranchise.uientities.MentorNotification;
 import dev.kyma.samples.easyfranchise.uientities.UIFranchise;
-import jakarta.json.Json;
-import jakarta.json.JsonObject;
 import dev.kyma.samples.easyfranchise.uientities.NotificationConfig;
 import jakarta.json.bind.Jsonb;
-import jakarta.json.Json;
-import jakarta.json.JsonObject;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -43,6 +37,10 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 
+import java.io.StringReader;
+import java.util.Base64;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
 
 /**
  * Rest service for EasyFranchise operations. For tenant specific calls, the
@@ -621,14 +619,16 @@ public class EFService extends BaseRS {
         logger.info(Util.createLogDetails(resContext, headers));
         try {
             var tenantId = Util.validateTenantAccess(headers);
-            var user = getUser(resContext, headers);
+            
+            //the user in plain 
+            var user = getUser(headers);
             
             ConnectionParameter param = new ConnectionParameter(RequestMethod.PUT,
                     Util.getMeteringOperationServiceUrl() + "user/login").setAcceptJsonHeader();
             param.payload = "{\"tenantid\": \"" + tenantId + "\", \"user\": \"" + user + "\"}";
             Connection.call(param);
             if (param.status != HttpStatus.SC_OK) {
-                throw new WebApplicationException("Error while calling metering operations service.  "+ param.getUrl() + " status:" + param.status,  param.status);
+                throw new WebApplicationException("Error while calling metering day2 service.  "+ param.getUrl() + " status:" + param.status,  param.status);
             }
             return createOkResponse(param.content);
         } catch (WebApplicationException e) {
@@ -638,68 +638,31 @@ public class EFService extends BaseRS {
             logger.error(UNEXPECTED_ERROR + e.getMessage(), e);
             return createErrorResponse();
         }
-
-    }
-    
-    /**
-     * Get the user name from the request Context. Return a default name for the
-     * local development
-     * @param httpHeaders 
-     */
-    public static String getUser(HttpHeaders httpHeaders) throws Exception {
-        
+    }   
+    /*
+    * Get the user name from the request context. Return a default name for the local development
+    * @param httpHeaders 
+    */
+    private static String getUser(HttpHeaders httpHeaders) throws Exception {
         if (Util.isLocalDev()) { // in the local run, we do not have a logged in user. We are just using a default string
-            return "default-local-user-id";  //TODO make this as property
+            return "default-local-user-id";  
         }
 
-         List<String> authorisationHeaders = httpHeaders.getRequestHeader("Authorization");
-         if (authorisationHeaders.size()<1)
-             throw new Exception("missing Header for key \"Authorization\".");
-         
-         // The user in plainext is taken. Consider encrypting if a higher privacy policy is needed.
-         var user = getUserFromBearerToken(authorisationHeaders.get(0));
-         return user; 
-
-    }
-
-     /**
-     * Get the user name from the request Context. Return a default name for the
-     * local development
-     * @param httpHeaders 
-     */
-    public static String getUser(ContainerRequestContext resContext, HttpHeaders httpHeaders) throws Exception {
+        List<String> authorisationHeaders = httpHeaders.getRequestHeader("Authorization");
+        if (authorisationHeaders.size()<1)
+            throw new Exception("missing Header for key \"Authorization\".");
         
-        if (Util.isLocalDev()) { // in the local run, we do not have a logged in user. We are just using a default string
-            return "default-local-user-id";
-        }
-
-         List<String> authorisationHeaders = httpHeaders.getRequestHeader("Authorization");
-         if (authorisationHeaders.size()<1)
-             throw new Exception("missing Header for key \"Authorization\".");
-         
-         return getUserFromBearerToken(authorisationHeaders.get(0));
-         
-         
-        /* TODO why can't the user be found in the Prinzipal? Waiting for https://jtrack.wdf.sap.corp/browse/NGPBUG-178719
-        SecurityContext securityContext = resContext.getSecurityContext();
-        if (securityContext == null)
-            throw new Exception("Missing SecurityContext in the ContainerRequestContext");
-
-        Principal principal = securityContext.getUserPrincipal();
-        if (principal == null)
-            throw new Exception("The ContainerRequestContext.getSecurityContext().getUserPrincipal() is null.");
-
-        return principal.getName();
-        */
+        // The user in plainext is taken. Consider encrypting if a higher privacy policy is needed.
+        var user = getUserFromBearerToken(authorisationHeaders.get(0));
+        return user;
     }
-
     /**
      * Get the User from the bearerToken
      * @param bearerToken
      * @return
      * @throws Exception
      */
-    public static String getUserFromBearerToken(String bearerToken) throws Exception {
+    private static String getUserFromBearerToken(String bearerToken) throws Exception {
         if (bearerToken.indexOf("Bearer") != 0)
             throw new Exception("The Bearer token of the header dose not not start with `Bearer `");
         try {
@@ -715,7 +678,9 @@ public class EFService extends BaseRS {
         } catch (Exception e) {
             throw new Exception("could not read user_name from Bearer token", e);
         }
-    }  
+    }   
+
+    
 
     /**
      * OPTIONS calls for local development.

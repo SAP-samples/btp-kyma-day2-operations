@@ -4,10 +4,14 @@ WORKDIR /app
 COPY code/day2-operations/source/day2-ui/package*.json ./
 RUN npm install
 COPY code/day2-operations/source/day2-ui/. .
+
+# Set the environment variable for Node.js
+ENV NODE_OPTIONS=--openssl-legacy-provider
+
 RUN npm run build
 
 # production stage
-FROM nginx:stable-alpine as production-stage
+FROM --platform=linux/amd64 nginx:stable-alpine as production-stage
 COPY --from=build-stage /app/resources /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

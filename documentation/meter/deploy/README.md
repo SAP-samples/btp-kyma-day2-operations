@@ -1,6 +1,6 @@
 # Deploy the Day2 Application to Kyma
 
-The following chapters will guide you through the deployment process of the Day2 Application. There are two options to deploy the application: manually and using a [script](../../../code/setup/day2-operations-deployment.sh). In the follwoing chapter we will describe the manual approach. For the update of the Easy Franchise application, we will only use the build script and will not explain the manual steps. If you want to understand more about the Easy Franchise deployment, check the [Deployment chapter of the Easy Franchise: Develop a Multitenant Extension Application in SAP BTP, Kyma Runtime](https://github.com/SAP-samples/btp-kyma-multitenant-extension/tree/main/documentation/deploy) mission.
+The following chapters will guide you through the deployment process of the Day2 application. There are two options to deploy the application: manually and using a [script](../../../code/setup/day2-operations-deployment.sh). In the following chapter, we will describe the manual approach. For the update of the Easy Franchise application, we will only use the build script and will not explain the manual steps. If you want to understand more about the Easy Franchise deployment, check the [Deployment chapter of the Easy Franchise: Develop a Multitenant Extension Application in SAP BTP, Kyma Runtime](https://github.com/SAP-samples/btp-kyma-multitenant-extension/tree/main/documentation/deploy) mission.
 
 ## Prerequisites
 
@@ -40,7 +40,9 @@ To execute all the necessary steps for the deployment, you will need the followi
    ./easyfranchise-deployment.sh
    ```
 
-   You need to update the Database service, the Easy Franchise service and the UI. Alternatively, you can choose the Full-Deployment option which will conduct a complete deployment of all components.
+   > Note: Make sure that the file is executable. If this is not the case, you can do it for example with ```chmod 777 easyfranchise-deployment.sh``` on Unic OS and then execute the script.
+
+   > Note: You need to update the Database service, the Easy Franchise service and the UI. Alternatively, you can choose the Full-Deployment option which will conduct a complete deployment of all components.
    If you have problems in providing the necessary information for the script, have a look at the [deployment script description](https://github.com/SAP-samples/btp-kyma-multitenant-extension/tree/main/documentation/appendix/script-deployment).
 
 ## Deploy the Day2 Application
@@ -95,7 +97,7 @@ When we speak about **docker-repository**, we mean the combination of account an
    1. Navigate to the Day2 service source folder. As the Day2 service is based on Spring, we also use Spring tools to build the image.
 
       ``` bash
-      cd /code/day2-operations/source/day2-service
+      cd code/day2-operations/source/day2-service
       ./mvnw spring-boot:build-image -DskipTests=true -Dspring-boot.build-image.imageName="<docker-repository>:day2-service-0.1"
       ```
 

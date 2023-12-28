@@ -1,3 +1,5 @@
+> Important note: Deprecated. See [related blog](https://blogs.sap.com/2022/12/09/deprecation-of-prometheus-grafana-based-monitoring-in-sap-btp-kyma-runtime/)
+
 # Exposing built-in Grafana securely with Identity Authentication (IAS)
 
 Kyma comes with Grafana, which provides a dashboard and a graph editor to visualize metrics and logs. By default, Kyma doesn't expose Grafana. We recommend that you expose Grafana securely so you can access it directly from Kyma Dashboard. 

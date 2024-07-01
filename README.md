@@ -1,3 +1,8 @@
+# DEPRECATED
+
+> [!CAUTION]  
+> As of July 2024 the tutorial is discontinued. The content provided is not going to be maintained anymore. 
+
 # Easy Franchise: Extend a Kyma-Based Multitenant Application with Day 2 Operations
 
 > Important information: The content of this GitHub repository has been created as a source for the [Extend a Kyma-Based Multitenant Application with Day 2 Operations](https://discovery-center.cloud.sap/missiondetail/url-to-be-updated) mission at SAP Discovery Center. So, we recommend you use directly the mission in the SAP Discovery Center for a better experience.

@@ -1,3 +1,8 @@
+# DEPRECATED
+
+> [!CAUTION]  
+> As of July 2024 the tutorial is discontinued. The content provided is not going to be maintained anymore. 
+
 # Easy Franchise: Extend a Kyma-Based Multitenant Application with Day 2 Operations
 
 [![REUSE status](https://api.reuse.software/badge/github.com/SAP-samples/btp-kyma-day2-operations)](https://api.reuse.software/info/github.com/SAP-samples/btp-kyma-day2-operations)

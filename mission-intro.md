@@ -1,3 +1,8 @@
+# DEPRECATED
+
+> [!CAUTION]  
+> As of July 2024 the tutorial is discontinued. The content provided is not going to be maintained anymore.>
+
 # Welcome to the Mission
 
 In this mission, you will learn how to extend a Kyma based multitenant application with day 2 operations. It is related to the mission [Develop a Multitenant Extension Application in SAP BTP, Kyma Runtime](https://discovery-center.cloud.sap/missiondetail/3683/3726/) and extends it by focusing on day 2 operations topics like CI/CD, observability and metering.
